@@ -19,6 +19,18 @@ public class WebSocket {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String getClient() {
-        return "<script src=\"//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js\"></script><script src=\"//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js\"></script>";
+        return "<script src=\"//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js\"></script>" +
+                "<script src=\"//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js\"></script>" +
+                "<script type=\"text/javascript\">\n" +
+                "  var socket = new SockJS('/hello');\n" +
+                "  stompClient = Stomp.over(socket);\n" +
+                "  stompClient.connect({}, function (frame) {\n" +
+                "    stompClient.subscribe('/hello', function (msg) {\n" +
+                "      console.log(msg.body);\n" +
+                "      stompClient.disconnect();\n" +
+                "    });\n" +
+                "    stompClient.send('/hello', {}, 'World');\n" +
+                "  });\n" +
+                "</script>";
     }
 }
